@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qf.admin.mapper.AdminMapper">
+
+	<sql id="Where_Clause">
+		<where>
+			<if test="query != null and query.num != -1">
+				and admin.oskey = #{query.num}
+			</if>
+		</where>
+	</sql>
+
+    <sql id="Where_Clause2">
+        <where>
+            <if test="query != null and query.num != -1">
+                and id = #{query.num}
+            </if>
+        </where>
+    </sql>
+
+    <sql id="Where_Clause3">
+        <where>
+            <if test="query != null and query.num != -1">
+                and departid = #{query.num}
+            </if>
+        </where>
+    </sql>
+	
+	<select id="showAdmin" resultType="com.qf.admin.pojo.vo.AdminDepart">
+		select
+		*
+		from ipm.admin
+        left join ipm.departname
+        on admin.oskey = departname.id
+		<include refid="Where_Clause" />
+		limit #{pageInfo.offset},#{pageInfo.limit}
+	</select>
+
+    <select id="showDeparts" resultType="com.qf.admin.pojo.po.Departname">
+        select
+        *
+        from ipm.departname
+        <include refid="Where_Clause2" />
+        limit #{pageInfo.offset},#{pageInfo.limit}
+    </select>
+
+    <select id="showBulletins" resultType="com.qf.admin.pojo.po.Bulletin">
+        select
+        id,bulletin,time,creater,(
+            case status
+            when 1 then "启用"
+            when 0 then "禁用"
+            end
+        )status
+        from ipm.bulletin
+        limit #{pageInfo.offset},#{pageInfo.limit}
+    </select>
+
+	<select id="countItems" resultType="_long">
+		select count(1)
+		from ipm.admin
+		<include refid="Where_Clause" />
+	</select>
+
+    <select id="countDepart" resultType="_long">
+        select count(1)
+        from ipm.departname
+        <include refid="Where_Clause2" />
+    </select>
+
+    <select id="countBulletin" resultType="_long">
+        select count(1)
+        from ipm.bulletin
+    </select>
+
+    <select id="countFindIndexDepart" resultType="_long">
+        select count(1)
+        from ipm.ipconfig
+        where departid = #{departid}
+    </select>
+
+    <select id="findIndexDepart" resultType="com.qf.admin.pojo.vo.Ip">
+        select
+        *
+        from ipm.ipconfig as i
+        left join ipm.departname as d
+        on i.departid = d.id
+        where departid = #{departid}
+        limit #{pageInfo.offset},#{pageInfo.limit}
+    </select>
+
+    <select id="countFindIndexIp" resultType="_long">
+        select count(1)
+        from ipm.ipconfig
+        where ip like '${ip}%'
+        <if test="query != null and query.num != -1">
+            and departid = #{query.num}
+        </if>
+    </select>
+
+    <select id="findIndexIp" resultType="com.qf.admin.pojo.vo.Ip">
+        select
+        *
+        from ipm.ipconfig as i
+        left join ipm.departname as d
+        on i.departid = d.id
+        where ip like '${ip}%'
+        <if test="query != null and query.num != -1">
+            and departid = #{query.num}
+        </if>
+        limit #{pageInfo.offset},#{pageInfo.limit}
+    </select>
+
+    <select id="countFind" resultType="_long">
+        select
+        count(1)
+        from ipm.ipconfig as i
+        left join ipm.departname as d
+        on i.departid = d.id
+        <where>
+            <if test="search.keyword != null and search.keyword != '' ">
+                and ${search.searchItem} like '%${search.keyword}%'
+            </if>
+            <if test="search.departname != null and search.departname != '' ">
+                and departname like '%${search.departname}%'
+            </if>
+        </where>
+    </select>
+
+    <insert id="addAdmin">
+        insert into
+        ipm.admin(username,passwd,oskey,isadmin,iprange,ips,creater,createtime)
+        values(#{admin.username},#{admin.passwd},#{admin.oskey},#{admin.isadmin},#{admin.iprange},#{admin.ips},#{admin.creater},now())
+    </insert>
+
+    <delete id="delAdmin">
+        delete from ipm.admin where id = #{id}
+    </delete>
+
+    <insert id="addDepartname">
+        insert into
+        ipm.departname(departname,addtime,adder,modifier,modifytime)
+        values(#{departname},now(),#{username},#{username},now())
+    </insert>
+
+    <delete id="delDepartname">
+        delete from ipm.departname where id = #{id}
+    </delete>
+
+    <delete id="delDepartnameAdmin">
+        delete from ipm.admin where oskey = #{id}
+    </delete>
+
+    <delete id="delDepartnameIpconfig">
+        delete from ipm.ipconfig where departid = #{id}
+    </delete>
+
+    <update id="modifyDepartname">
+        update
+        ipm.departname
+        set departname = #{name} , modifier = #{username} , modifytime = now()
+        where id = #{id}
+    </update>
+
+    <insert id="addBulletin">
+        insert into
+        ipm.bulletin(bulletin,time,creater,status)
+        values(#{bulletin.bulletin},now(),#{bulletin.creater},1)
+    </insert>
+
+    <delete id="delNote">
+        delete from ipm.bulletin where id = #{id}
+    </delete>
+
+    <update id="modifyNote">
+        update
+        ipm.bulletin
+        set bulletin = #{note}
+        where id = #{id}
+    </update>
+
+    <update id="modifyBulletin">
+        update
+        ipm.bulletin
+        set status = #{status}
+        where id = #{id}
+    </update>
+
+    <select id="findDeparts" resultType="com.qf.admin.pojo.po.Departname">
+        select
+        *
+        from ipm.departname
+    </select>
+
+    <select id="findNotes" resultType="java.lang.String">
+        select distinct
+        bulletin
+        from ipm.bulletin
+        where status = 1
+    </select>
+
+    <select id="findIps" resultType="java.lang.String">
+        select distinct
+        iprange
+        from ipm.ipconfig
+        <include refid="Where_Clause3"/>
+    </select>
+
+    <select id="searchIp" resultType="com.qf.admin.pojo.po.Ipconfig">
+        select
+        *
+        from ipm.ipconfig
+        where ip = #{ip}
+    </select>
+
+    <select id="searchAdminIp" resultType="java.lang.String">
+        select
+        ips
+        from ipm.admin
+        where (ips like "%${ip}%" or ips like "全部") and id = #{id}
+    </select>
+
+    <select id="searchDepartname" resultType="com.qf.admin.pojo.po.Departname">
+        select
+        *
+        from ipm.departname
+        where departname = #{departname}
+    </select>
+
+    <select id="searchUsername" resultType="com.qf.admin.pojo.po.Admin">
+        select
+        *
+        from ipm.admin
+        where username = #{username}
+    </select>
+
+    <select id="find" resultType="com.qf.admin.pojo.vo.Ip">
+        select
+        *
+        from ipm.ipconfig as i
+        left join ipm.departname as d
+        on i.departid = d.id
+        <where>
+            <if test="search.keyword != null and search.keyword != '' ">
+                and ${search.searchItem} like '%${search.keyword}%'
+            </if>
+            <if test="search.departname != null and search.departname != '' ">
+                and departname like '%${search.departname}%'
+            </if>
+        </where>
+        limit #{pageInfo.offset},#{pageInfo.limit}
+    </select>
+
+    <select id="finduser" resultType="com.qf.admin.pojo.vo.AdminDepart">
+        select
+        *
+        from ipm.admin
+        left join ipm.departname
+        on admin.oskey = departname.id
+        where username = #{admin.username} and passwd = #{admin.passwd};
+    </select>
+
+    <insert id="addIp">
+        insert into
+        ipm.ipconfig(departid,room,user,type,tel,iprange,ip,mac,specifications,buytime,others,adder,addtime)
+        values(#{ipconfig.departid},#{ipconfig.room},#{ipconfig.user},#{ipconfig.type},#{ipconfig.tel},#{ipconfig.iprange},#{ipconfig.ip},#{ipconfig.mac},#{ipconfig.specifications},#{ipconfig.buytime},#{ipconfig.others},#{ipconfig.adder},now())
+    </insert>
+
+    <update id="editIp">
+        update
+        ipm.ipconfig
+        set departid = #{ipconfig.departid}, room = #{ipconfig.room}, user = #{ipconfig.user}, type = #{ipconfig.type}, tel = #{ipconfig.tel},iprange = #{ipconfig.iprange},ip = #{ipconfig.ip},mac = #{ipconfig.mac},specifications = #{ipconfig.specifications},buytime = #{ipconfig.buytime}, others = #{ipconfig.others}, adder = #{ipconfig.adder}, addtime = now()
+        where id = #{ipconfig.id}
+    </update>
+
+    <update id="modifyIp">
+        update
+        ipm.ipconfig
+        set ${field} = #{value}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteIpconfig">
+        delete
+        from ipm.ipconfig
+        where id = #{id}
+    </delete>
+
+    <delete id="delIPs">
+        update ipm.admin set ips = '' , iprange = '' where id = #{id}
+    </delete>
+
+    <select id="searchAdmin" resultType="com.qf.admin.pojo.po.Admin">
+        select
+        *
+        from ipm.admin
+        where id = #{id}
+    </select>
+
+    <select id="searchColor" resultType="com.qf.admin.pojo.vo.IpColor">
+        select
+        departid,color,ip,departname
+        from ipm.ipconfig
+        left join ipm.departname
+        on ipm.ipconfig.departid = ipm.departname.id
+        where iprange like #{ip}
+    </select>
+
+    <select id="searchColorDepart" resultType="com.qf.admin.pojo.po.Departname">
+        select
+        *
+        from ipm.departname
+        where id in (
+        select distinct
+        departid
+        from ipm.ipconfig
+        where iprange like #{ip}
+        )
+    </select>
+
+    <update id="modifyIprange">
+        update
+        ipm.admin
+        set ips = #{admin.ips} , iprange = #{admin.iprange}
+        where id = #{admin.id}
+    </update>
+
+    <update id="modifyAdmin">
+        update
+        ipm.admin
+        set passwd = #{newpasswd}
+        where id = #{id}
+    </update>
+
+    <select id="showIp" resultType="com.qf.admin.pojo.vo.Ip">
+        select
+        *
+        from ipm.ipconfig as i
+        left join ipm.departname as d
+        on i.departid = d.id
+        where ip = #{ip}
+    </select>
+</mapper>
