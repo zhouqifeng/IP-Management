@@ -239,7 +239,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Result<Ip> indexfindip(PageInfo pageInfo, String ip,AdminQuery query) {
-        Result<Ip> result = new Result<Ip>();
+        Result<Ip> result = new Result<>();
         //查询成功的情况
         result.setCode(0);
         result.setMsg("success");

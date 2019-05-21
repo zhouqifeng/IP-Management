@@ -1,11 +1,34 @@
 <component name="ProjectDictionaryState">
   <dictionary name="Lenovo">
     <words>
+      <w>addiprange</w>
+      <w>addtime</w>
+      <w>buytime</w>
+      <w>creater</w>
+      <w>createtime</w>
+      <w>departid</w>
       <w>departlist</w>
+      <w>departname</w>
       <w>findlist</w>
+      <w>finduser</w>
+      <w>indexdepart</w>
+      <w>indexfinddepart</w>
+      <w>indexfindip</w>
+      <w>indexip</w>
+      <w>indexlistdepart</w>
+      <w>indexlistip</w>
+      <w>ipconfig</w>
+      <w>ipend</w>
+      <w>iprange</w>
+      <w>ipstart</w>
+      <w>isadmin</w>
       <w>layui</w>
       <w>loginout</w>
+      <w>modifyiprange</w>
+      <w>newpasswd</w>
       <w>notelist</w>
+      <w>oskey</w>
+      <w>passwd</w>
       <w>updown</w>
       <w>weadmin</w>
       <w>wenav</w>
