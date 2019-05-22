@@ -26,7 +26,9 @@ public interface AdminMapper {
 
     int modifyDepartname(@Param("id") Long id, @Param("name") String name, @Param("username") String username);
 
-    int addDepartname(@Param("departname") String departname, @Param("username") String username);
+    int modifyDepartColor(@Param("id") Long id, @Param("color") String color, @Param("username") String username);
+
+    int addDepartname(@Param("departname") String departname, @Param("color") String color, @Param("username") String username);
 
     int delDepartname(@Param("id") Long id);
 
@@ -76,6 +78,8 @@ public interface AdminMapper {
 
     Departname searchDepartname(@Param("departname") String departname);
 
+    List<String> searchDepartColor(@Param("color") String color);
+
     Admin searchUsername(@Param("username") String username);
 
     int delIPs(@Param("id") Long id);
@@ -95,4 +99,5 @@ public interface AdminMapper {
     Ip showIp(@Param("ip") String ip);
 
     int editIp(@Param("ipconfig") Ipconfig ipconfig);
+
 }

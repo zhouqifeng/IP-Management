@@ -10,6 +10,7 @@ import com.qf.admin.pojo.po.Departname;
 import com.qf.admin.pojo.po.Ipconfig;
 import com.qf.admin.pojo.vo.*;
 import com.qf.admin.service.AdminService;
+import com.sun.istack.internal.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,7 +42,7 @@ public class AdminAction {
         return "error";
     }
 
-    @RequestMapping("/login")
+    @RequestMapping("/")
     public String login(){
 
         return "/login";
@@ -208,7 +209,7 @@ public class AdminAction {
 
             String iproot = adminService.searchAdminIp(ip,id);
 
-            if(iproot != null || iproot == "全部"){
+            if(iproot != null || "全部".equals(iproot)){
                 Ipconfig ipconfig = adminService.searchIp(ip);
                 if(ipconfig != null){
                     map.put("status","1");
@@ -233,7 +234,7 @@ public class AdminAction {
     @PostMapping(value = "/searchUsername")
     public Map searchUsername(@RequestParam("username") String username) {
 
-        Map<String,String> map = new HashMap<String, String>();
+        Map<String,String> map = new HashMap<>();
         try {
             Admin admin = adminService.searchUsername(username);
             if(admin != null){
@@ -304,17 +305,24 @@ public class AdminAction {
 
     @ResponseBody
     @PostMapping(value = "/addDepartname")
-    public int addDepartname(HttpSession session, @RequestParam("departname") String departname) {
+    public int addDepartname(HttpSession session, @RequestParam("departname") String departname, @RequestParam("color") String color) {
         AdminDepart user = (AdminDepart) session.getAttribute("user");
         try {
             Departname depart = adminService.searchDepartname(departname);
-            if(depart == null){
-                int i = adminService.addDepartname(departname,user.getUsername());
+            List<String> col = adminService.searchDepartColor(color);
+            if(depart == null && col.isEmpty()){
+                int i = adminService.addDepartname(departname,color,user.getUsername());
                 List<Departname> departs = adminService.findDeparts();
                 session.setAttribute("departs",departs);
                 return i;
             }
+
+            if(col.size() != 0){
+                return 3;
+            }
+
             return 2;
+
         } catch (Exception e) {
             e.printStackTrace();
             return 0;
@@ -344,6 +352,25 @@ public class AdminAction {
         try {
             if(depart == null){
                 int i = adminService.modifyDepartname(id,name,user.getUsername());
+                List<Departname> departs = adminService.findDeparts();
+                session.setAttribute("departs",departs);
+                return i;
+            }
+            return 2;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    @ResponseBody
+    @PostMapping("/modifyDepartColor")
+    public int modifyDepartColor(HttpSession session, @RequestParam("id") Long id,@RequestParam("newColor") String color){
+        AdminDepart user = (AdminDepart) session.getAttribute("user");
+        List<String> col = adminService.searchDepartColor(color);
+        try {
+            if(col.isEmpty()){
+                int i = adminService.modifyDepartColor(id,color,user.getUsername());
                 List<Departname> departs = adminService.findDeparts();
                 session.setAttribute("departs",departs);
                 return i;
@@ -401,7 +428,7 @@ public class AdminAction {
     public int modifyiprange(@RequestBody AdminAdd adminadd) {
 
         Admin admin = adminService.searchAdmin(adminadd.getId());
-        if(admin.getIprange().trim() == ""){
+        if("".equals(admin.getIprange().trim())){
             admin.setIprange(adminadd.getIprange()+adminadd.getIpstart()+" - "+adminadd.getIprange()+adminadd.getIpend());
         }else{
             admin.setIprange(admin.getIprange() + " , " + adminadd.getIprange()+adminadd.getIpstart()+" - "+adminadd.getIprange()+adminadd.getIpend());

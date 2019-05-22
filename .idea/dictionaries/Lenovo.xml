@@ -3,6 +3,7 @@
     <words>
       <w>addiprange</w>
       <w>addtime</w>
+      <w>adminlogin</w>
       <w>buytime</w>
       <w>creater</w>
       <w>createtime</w>
@@ -20,16 +21,20 @@
       <w>ipconfig</w>
       <w>ipend</w>
       <w>iprange</w>
+      <w>iproot</w>
       <w>ipstart</w>
       <w>isadmin</w>
+      <w>laypage</w>
       <w>layui</w>
       <w>loginout</w>
       <w>modifyiprange</w>
       <w>modifytime</w>
       <w>newpasswd</w>
+      <w>nikename</w>
       <w>notelist</w>
       <w>oskey</w>
       <w>passwd</w>
+      <w>repass</w>
       <w>updown</w>
       <w>weadmin</w>
       <w>wenav</w>

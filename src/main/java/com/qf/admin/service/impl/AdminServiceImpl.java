@@ -54,7 +54,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Result<Departname> showDeparts(PageInfo pageInfo, AdminQuery query) {
 
-        Result<Departname> result = new Result<Departname>();
+        Result<Departname> result = new Result<>();
 
         //查询成功的情况
         result.setCode(0);
@@ -126,8 +126,8 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public int addDepartname(String departname, String username) {
-        return mapper.addDepartname(departname,username);
+    public int addDepartname(String departname, String color, String username) {
+        return mapper.addDepartname(departname,color,username);
     }
 
     @Override
@@ -148,6 +148,11 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public int modifyDepartname(Long id, String name,String username) {
         return mapper.modifyDepartname(id,name,username);
+    }
+
+    @Override
+    public int modifyDepartColor(Long id, String color,String username) {
+        return mapper.modifyDepartColor(id,color,username);
     }
 
     @Override
@@ -285,6 +290,12 @@ public class AdminServiceImpl implements AdminService {
     public Departname searchDepartname(String departname) {
 
         return mapper.searchDepartname(departname);
+    }
+
+    @Override
+    public List<String> searchDepartColor(String color) {
+
+        return mapper.searchDepartColor(color);
     }
 
     @Override

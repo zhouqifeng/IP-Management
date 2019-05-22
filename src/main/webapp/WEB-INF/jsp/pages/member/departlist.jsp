@@ -50,7 +50,7 @@
     <c:if test="${user.isadmin == 1}">
         <div class="weadmin-block demoTable">
             <%--<button class="layui-btn layui-btn-danger" data-type="getCheckData"><i class="layui-icon">&#xe640;</i>删除</button>--%>
-            <button class="layui-btn" onclick="WeAdminShow('添加部门','./addDepartname',400,200)"><i class="layui-icon">&#xe61f;</i>添加部门</button>
+            <button class="layui-btn" onclick="WeAdminShow('添加部门','./addDepartname',400,250)"><i class="layui-icon">&#xe61f;</i>添加部门</button>
             <span class="we-red">*注意,删除操作会删去部门管理员信息,请谨慎!!</span>
         </div>
     </c:if>
@@ -86,6 +86,7 @@
                     cols:[[
                         {field: 'id', title: '部门ID'},
                         {field: 'departname', title: '部门名称',edit: 'text'},
+                        {field: 'color', title: '颜色',edit: 'text'},
                         {field: 'addtime', title: '创建时间'},
                         {fixed: 'right',title:'操作',width:"8%",align:'center',toolbar:"#barlist"}
                         // ,
@@ -102,7 +103,8 @@
                     cols:[[
                         {field: 'id', title: '部门ID'},
                         {field: 'departname', title: '部门名称',edit: 'text'},
-                        {field: 'addtime', title: '创建时间'},
+                        {field: 'color', title: '颜色'},
+                        {field: 'addtime', title: '创建时间'}
                     ]],
                     page: true,
                     limits: [5,10,20,50]
@@ -150,25 +152,48 @@
                     ,data = obj.data //得到所在行所有键值
                     ,field = obj.field; //得到字段
                 //layer.msg('[ID: '+ data.id +'] ' + field + ' 字段更改为：'+ value);
-                $.post(
-                    '../../modifyDepartname',
-                    {
-                        'id': data.id,
-                        'newName': value
-                    },
-                    //success:异步请求执行成功之后的回调函数
-                    function(data){
-                        //至少删除一条记录
-                        if (data == 1) {
-                            //停留在原来页面刷新,使用的是分页按钮
-                            $('.layui-laypage-btn').click();
-                            layer.msg("更新成功！", {icon: 6});
-                        }else if(data == 2){
-                            $('.layui-laypage-btn').click();
-                            layer.msg("部门已存在,无法更新!", {icon: 5});
+
+                if(field === "departname"){
+                    $.post(
+                        '../../modifyDepartname',
+                        {
+                            'id': data.id,
+                            'newName': value
+                        },
+                        //success:异步请求执行成功之后的回调函数
+                        function(data){
+                            //至少删除一条记录
+                            if (data === 1) {
+                                //停留在原来页面刷新,使用的是分页按钮
+                                $('.layui-laypage-btn').click();
+                                layer.msg("部门更新成功！", {icon: 6});
+                            }else if(data === 2){
+                                $('.layui-laypage-btn').click();
+                                layer.msg("部门已存在,无法更新!", {icon: 5});
+                            }
                         }
-                    }
-                );
+                    );
+                }else{
+                    $.post(
+                        '../../modifyDepartColor',
+                        {
+                            'id': data.id,
+                            'newColor': value
+                        },
+                        //success:异步请求执行成功之后的回调函数
+                        function(data){
+                            //至少删除一条记录
+                            if (data === 1) {
+                                //停留在原来页面刷新,使用的是分页按钮
+                                $('.layui-laypage-btn').click();
+                                layer.msg("颜色更新成功！", {icon: 6});
+                            }else if(data === 2){
+                                $('.layui-laypage-btn').click();
+                                layer.msg("颜色已存在,无法更新!", {icon: 5});
+                            }
+                        }
+                    );
+                }
             });
 
             //定义了一个空对象

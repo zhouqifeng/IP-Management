@@ -141,8 +141,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <insert id="addDepartname">
         insert into
-        ipm.departname(departname,addtime,adder,modifier,modifytime)
-        values(#{departname},now(),#{username},#{username},now())
+        ipm.departname(departname,color,addtime,adder,modifier,modifytime)
+        values(#{departname},#{color},now(),#{username},#{username},now())
     </insert>
 
     <delete id="delDepartname">
@@ -161,6 +161,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update
         ipm.departname
         set departname = #{name} , modifier = #{username} , modifytime = now()
+        where id = #{id}
+    </update>
+
+    <update id="modifyDepartColor">
+        update
+        ipm.departname
+        set color = #{color} , modifier = #{username} , modifytime = now()
         where id = #{id}
     </update>
 
@@ -227,6 +234,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         *
         from ipm.departname
         where departname = #{departname}
+    </select>
+
+    <select id="searchDepartColor" resultType="java.lang.String">
+        select
+        color
+        from ipm.departname
+        where color = #{color}
     </select>
 
     <select id="searchUsername" resultType="com.qf.admin.pojo.po.Admin">

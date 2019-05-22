@@ -28,7 +28,9 @@ public interface AdminService {
 
     int modifyDepartname(Long id, String name,String username);
 
-    int addDepartname(String departname,String username);
+    int modifyDepartColor(Long id, String color, String username);
+
+    int addDepartname(String departname,String color,String username);
 
     int delDepartname(Long id);
 
@@ -63,6 +65,8 @@ public interface AdminService {
     Ipconfig searchIp(String ip);
 
     Departname searchDepartname(String departname);
+
+    List<String> searchDepartColor(String color);
 
     Admin searchUsername(String username);
 

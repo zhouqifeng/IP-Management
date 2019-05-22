@@ -30,6 +30,14 @@
             </div>
         </div>
         <div class="layui-form-item">
+            <label for="L_color" class="layui-form-label">
+                <span class="we-red">*</span>颜色
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="L_color" name="color" lay-verify="required" placeholder="#000000" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
             <label class="layui-form-label">
             </label>
             <button class="layui-btn" lay-filter="add" lay-submit="">确定</button>
@@ -47,6 +55,11 @@
             admin = layui.admin,
             layer = layui.layer;
 
+        //自定义验证规则
+        form.verify({
+            rgb: [/^#[0-9a-fA-F]{6}$/,'不符合格式'],
+        });
+
         //监听提交
         form.on('submit(add)', function(data) {
             //console.log(data.field);
@@ -59,10 +72,13 @@
             // 发异步，把数据提交给后台
             $.post(
                 '../../addDepartname',
-                {'departname':f.departname},
+                {
+                    'departname':f.departname,
+                    'color':f.color
+                },
                 //success:异步请求执行成功之后的回调函数
                 function(data){
-                if(data == 1){
+                if(data === 1){
                     layer.alert("增加成功", {
                         icon: 6
                     }, function() {
@@ -72,8 +88,18 @@
                         parent.layer.close(index);
                         parent.layui.table.reload('articleList');
                     });
-                }else if(data == 2){
+                }else if(data === 2){
                     layer.alert("部门已存在", {
+                        icon: 5
+                    }, function() {
+                        // 获得frame索引
+                        var index = parent.layer.getFrameIndex(window.name);
+                        //关闭当前frame
+                        parent.layer.close(index);
+                        parent.layui.table.reload('articleList');
+                    });
+                }else if(data === 3){
+                    layer.alert("颜色已存在", {
                         icon: 5
                     }, function() {
                         // 获得frame索引
