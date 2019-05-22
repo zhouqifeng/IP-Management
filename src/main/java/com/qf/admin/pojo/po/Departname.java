@@ -35,7 +35,7 @@ public class Departname {
     }
 
     public String getAddtime() {
-        return addtime.substring(0,addtime.length()-2);
+        return addtime;
     }
 
     public void setAddtime(String addtime) {
@@ -59,7 +59,7 @@ public class Departname {
     }
 
     public String getModifytime() {
-        return modifytime.substring(0,modifytime.length()-2);
+        return modifytime;
     }
 
     public void setModifytime(String modifytime) {

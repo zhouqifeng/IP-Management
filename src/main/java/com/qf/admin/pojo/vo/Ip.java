@@ -18,6 +18,14 @@ public class Ip {
     private String adder;
     private String addtime;
 
+    public String getAddtime() {
+        return addtime;
+    }
+
+    public void setAddtime(String addtime) {
+        this.addtime = addtime;
+    }
+
     public String getType() {
         return type;
     }
@@ -130,13 +138,6 @@ public class Ip {
         this.adder = adder;
     }
 
-    public String getAddtime() {
-        return addtime.substring(0,addtime.length()-2);
-    }
-
-    public void setAddtime(String addtime) {
-        this.addtime = addtime;
-    }
 
     @Override
     public String toString() {

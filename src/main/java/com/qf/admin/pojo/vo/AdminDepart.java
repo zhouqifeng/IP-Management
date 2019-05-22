@@ -95,7 +95,7 @@ public class AdminDepart {
     }
 
     public String getCreatetime() {
-        return createtime.substring(0,createtime.length()-2);
+        return createtime;
     }
 
     public void setCreatetime(String createtime) {

@@ -24,16 +24,16 @@ public class Bulletin {
         this.bulletin = bulletin;
     }
 
-    public String getTime() {
-        return time.substring(0, time.length() - 2);
-    }
-
     public String getCreater() {
         return creater;
     }
 
     public void setCreater(String creater) {
         this.creater = creater;
+    }
+
+    public String getTime() {
+        return time;
     }
 
     public void setTime(String time) {

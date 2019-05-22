@@ -122,7 +122,7 @@ public class Ipconfig {
     }
 
     public String getAddtime() {
-        return addtime.substring(0,addtime.length()-2);
+        return addtime;
     }
 
     public void setAddtime(String addtime) {

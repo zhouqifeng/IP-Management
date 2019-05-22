@@ -27,6 +27,7 @@
             <entry key="com.zeroturnaround.jrebel.remoting.ModuleRemoteServerSelection" value="off" />
             <entry key="jrebelEnabled" value="true" />
             <entry key="lastExternalPluginCheckTime" value="1558425860769" />
+            <entry key="rebelXmlGenerationType" value="ide" />
           </map>
         </option>
         <option name="masterModuleName" />
@@ -94,6 +95,6 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.springframework:spring-test:4.3.8.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: commons-fileupload:commons-fileupload:1.3.1" level="project" />
     <orderEntry type="library" name="Maven: commons-io:commons-io:2.2" level="project" />
-    <orderEntry type="library" name="Maven: com.alibaba:fastjson:1.2.46" level="project" />
+    <orderEntry type="library" name="Maven: com.alibaba:fastjson:1.2.47" level="project" />
   </component>
 </module>
