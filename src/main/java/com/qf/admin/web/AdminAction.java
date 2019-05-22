@@ -48,6 +48,12 @@ public class AdminAction {
         return "/login";
     }
 
+    @RequestMapping("/login")
+    public String login2(){
+
+        return "/login";
+    }
+
     @RequestMapping("/logout")
     public String logout(HttpSession session){
 
