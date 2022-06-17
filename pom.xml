@@ -29,7 +29,7 @@
         <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
         <jsp-api.version>2.2</jsp-api.version>
         <commons-fileupload.version>1.3.1</commons-fileupload.version>
-        <fastjson>1.2.47</fastjson>
+        <fastjson>1.2.83</fastjson>
     </properties>
 
     <dependencies>
